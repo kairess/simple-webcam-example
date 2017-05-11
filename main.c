@@ -46,8 +46,8 @@ int main() {
 	
 	// This definition also exists in ImageProc.h.
 	// Webcam must support the resolution 640x480 with YUYV format. 
-	int IMG_WIDTH=640;
-	int IMG_HEIGHT=480;
+	// int IMG_WIDTH=640;
+	// int IMG_HEIGHT=480;
 
 	// The following variables are used to draw camera images.
     int winWidth=0;
