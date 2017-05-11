@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include "ImageProc.h"
 
-int preparecamera(videoid, camerabase) {
+int preparecamera(int videoid, int camerabase) {
     int ret;
 
 	if(camerabase<0){
