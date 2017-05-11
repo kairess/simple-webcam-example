@@ -78,7 +78,7 @@ int closedevice(void);
 
 void yuyv422toABGRY(unsigned char *src);
 
-int preparecamera(int videoid, int camerabase);
+int preparecamera(int videoid);
 
 // jint Java_com_camera_simplewebcam_CameraPreview_prepareCamera( JNIEnv* env,jobject thiz, jint videoid);
 // jint Java_com_camera_simplewebcam_CameraPreview_prepareCameraWithBase( JNIEnv* env,jobject thiz, jint videoid, jint videobase);
