@@ -2,7 +2,7 @@
 
 int errnoexit(const char *s)
 {
-	LOGE("%s error %d, %s", s, errno, strerror (errno));
+	// printf("%s error %d, %s", s, errno, strerror (errno));
 	return ERROR_LOCAL;
 }
 
@@ -45,19 +45,19 @@ int opendevice(int i)
 	sprintf(dev_name,"/dev/video%d",i);
 
 	if (-1 == stat (dev_name, &st)) {
-		LOGE("Cannot identify '%s': %d, %s", dev_name, errno, strerror (errno));
+		printf("Cannot identify '%s': %d, %s", dev_name, errno, strerror (errno));
 		return ERROR_LOCAL;
 	}
 
 	if (!S_ISCHR (st.st_mode)) {
-		LOGE("%s is no device", dev_name);
+		printf("%s is no device", dev_name);
 		return ERROR_LOCAL;
 	}
 
 	fd = open (dev_name, O_RDWR | O_NONBLOCK, 0);
 
 	if (-1 == fd) {
-		LOGE("Cannot open '%s': %d, %s", dev_name, errno, strerror (errno));
+		printf("Cannot open '%s': %d, %s", dev_name, errno, strerror (errno));
 		return ERROR_LOCAL;
 	}
 	return SUCCESS_LOCAL;
@@ -73,7 +73,7 @@ int initdevice(void)
 
 	if (-1 == xioctl (fd, VIDIOC_QUERYCAP, &cap)) {
 		if (EINVAL == errno) {
-			LOGE("%s is no V4L2 device", dev_name);
+			printf("%s is no V4L2 device", dev_name);
 			return ERROR_LOCAL;
 		} else {
 			return errnoexit ("VIDIOC_QUERYCAP");
@@ -81,12 +81,12 @@ int initdevice(void)
 	}
 
 	if (!(cap.capabilities & V4L2_CAP_VIDEO_CAPTURE)) {
-		LOGE("%s is no video capture device", dev_name);
+		printf("%s is no video capture device", dev_name);
 		return ERROR_LOCAL;
 	}
 
 	if (!(cap.capabilities & V4L2_CAP_STREAMING)) {
-		LOGE("%s does not support streaming i/o", dev_name);
+		printf("%s does not support streaming i/o", dev_name);
 		return ERROR_LOCAL;
 	}
 	
@@ -145,7 +145,7 @@ int initmmap(void)
 
 	if (-1 == xioctl (fd, VIDIOC_REQBUFS, &req)) {
 		if (EINVAL == errno) {
-			LOGE("%s does not support memory mapping", dev_name);
+			printf("%s does not support memory mapping", dev_name);
 			return ERROR_LOCAL;
 		} else {
 			return errnoexit ("VIDIOC_REQBUFS");
@@ -153,14 +153,14 @@ int initmmap(void)
 	}
 
 	if (req.count < 2) {
-		LOGE("Insufficient buffer memory on %s", dev_name);
+		printf("Insufficient buffer memory on %s", dev_name);
 		return ERROR_LOCAL;
  	}
 
 	buffers = calloc (req.count, sizeof (*buffers));
 
 	if (!buffers) {
-		LOGE("Out of memory");
+		printf("Out of memory");
 		return ERROR_LOCAL;
 	}
 
@@ -240,7 +240,7 @@ int readframeonce(void)
 		}
 
 		if (0 == r) {
-			LOGE("select timeout");
+			printf("select timeout");
 			return ERROR_LOCAL;
 
 		}
@@ -419,7 +419,7 @@ void yuyv422toABGRY(unsigned char *src)
 // 	int height=0;
 
 // 	if ((ret = AndroidBitmap_getInfo(env, bitmap, &info)) < 0) {
-// 		LOGE("AndroidBitmap_getInfo() failed ! error=%d", ret);
+// 		printf("AndroidBitmap_getInfo() failed ! error=%d", ret);
 // 		return;
 // 	}
     
@@ -429,12 +429,12 @@ void yuyv422toABGRY(unsigned char *src)
 // 	if(!rgb || !ybuf) return;
 
 // 	if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) {
-// 		LOGE("Bitmap format is not RGBA_8888 !");
+// 		printf("Bitmap format is not RGBA_8888 !");
 // 		return;
 // 	}
 
 // 	if ((ret = AndroidBitmap_lockPixels(env, bitmap, &pixels)) < 0) {
-// 		LOGE("AndroidBitmap_lockPixels() failed ! error=%d", ret);
+// 		printf("AndroidBitmap_lockPixels() failed ! error=%d", ret);
 // 	}
 
 // 	colors = (int*)pixels;
@@ -470,7 +470,7 @@ void yuyv422toABGRY(unsigned char *src)
 // 			stopcapturing();
 // 			uninitdevice ();
 // 			closedevice ();
-// 			LOGE("device resetted");	
+// 			printf("device resetted");	
 // 		}
 
 // 	}
