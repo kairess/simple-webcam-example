@@ -21,7 +21,7 @@ int preparecamera(videoid, camerabase) {
 			stopcapturing();
 			uninitdevice ();
 			closedevice ();
-			LOGE("device resetted");	
+			printf("device resetted");	
 		}
 
 	}
