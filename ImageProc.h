@@ -43,15 +43,15 @@ struct buffer {
 
 static char            dev_name[16];
 static int              fd              = -1;
-// struct buffer *         buffers         = NULL;
+struct buffer *         buffers         = NULL;
 static unsigned int     n_buffers       = 0;
 
-// int camerabase = -1;
+int camerabase = -1;
 
-// int *rgb = NULL;
-// int *ybuf = NULL;
+int *rgb = NULL;
+int *ybuf = NULL;
 
-// int yuv_tbl_ready=0;
+int yuv_tbl_ready=0;
 int y1192_tbl[256];
 int v1634_tbl[256];
 int v833_tbl[256];
@@ -77,6 +77,8 @@ int uninitdevice(void);
 int closedevice(void);
 
 void yuyv422toABGRY(unsigned char *src);
+
+int preparecamera(int videoid, int camerabase);
 
 // jint Java_com_camera_simplewebcam_CameraPreview_prepareCamera( JNIEnv* env,jobject thiz, jint videoid);
 // jint Java_com_camera_simplewebcam_CameraPreview_prepareCameraWithBase( JNIEnv* env,jobject thiz, jint videoid, jint videobase);

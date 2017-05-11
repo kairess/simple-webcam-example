@@ -402,6 +402,37 @@ void yuyv422toABGRY(unsigned char *src)
 
 }
 
+int preparecamera(int videoid, int camerabase) {
+    int ret;
+
+	if(camerabase<0){
+		camerabase = checkCamerabase();
+	}
+
+	ret = opendevice(camerabase + videoid);
+
+	if(ret != ERROR_LOCAL){
+		ret = initdevice();
+	}
+	if(ret != ERROR_LOCAL){
+		ret = startcapturing();
+
+		if(ret != SUCCESS_LOCAL){
+			stopcapturing();
+			uninitdevice ();
+			closedevice ();
+			printf("device resetted");	
+		}
+
+	}
+
+	if(ret != ERROR_LOCAL){
+		rgb = (int *)malloc(sizeof(int) * (IMG_WIDTH*IMG_HEIGHT));
+		ybuf = (int *)malloc(sizeof(int) * (IMG_WIDTH*IMG_HEIGHT));
+	}
+	return ret;
+}
+
 
 // void 
 // Java_com_camera_simplewebcam_CameraPreview_pixeltobmp( JNIEnv* env,jobject thiz,jobject bitmap){
