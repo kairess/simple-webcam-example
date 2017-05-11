@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "ImageProc.h"
 
 int preparecamera(videoid, camerabase) {
