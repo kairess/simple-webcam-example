@@ -2,37 +2,6 @@
 #include <stdbool.h>
 #include "ImageProc.h"
 
-int preparecamera(int videoid, int camerabase) {
-    int ret;
-
-	if(camerabase<0){
-		camerabase = checkCamerabase();
-	}
-
-	ret = opendevice(camerabase + videoid);
-
-	if(ret != ERROR_LOCAL){
-		ret = initdevice();
-	}
-	if(ret != ERROR_LOCAL){
-		ret = startcapturing();
-
-		if(ret != SUCCESS_LOCAL){
-			stopcapturing();
-			uninitdevice ();
-			closedevice ();
-			printf("device resetted");	
-		}
-
-	}
-
-	if(ret != ERROR_LOCAL){
-		rgb = (int *)malloc(sizeof(int) * (IMG_WIDTH*IMG_HEIGHT));
-		ybuf = (int *)malloc(sizeof(int) * (IMG_WIDTH*IMG_HEIGHT));
-	}
-	return ret;
-}
-
 int main() {
     bool cameraExists=false;
 	bool shouldStop=false;
