@@ -403,118 +403,118 @@ void yuyv422toABGRY(unsigned char *src)
 }
 
 
-void 
-Java_com_camera_simplewebcam_CameraPreview_pixeltobmp( JNIEnv* env,jobject thiz,jobject bitmap){
+// void 
+// Java_com_camera_simplewebcam_CameraPreview_pixeltobmp( JNIEnv* env,jobject thiz,jobject bitmap){
 
-	jboolean bo;
+// 	jboolean bo;
 
 
-	AndroidBitmapInfo  info;
-	void*              pixels;
-	int                ret;
-	int i;
-	int *colors;
+// 	AndroidBitmapInfo  info;
+// 	void*              pixels;
+// 	int                ret;
+// 	int i;
+// 	int *colors;
 
-	int width=0;
-	int height=0;
+// 	int width=0;
+// 	int height=0;
 
-	if ((ret = AndroidBitmap_getInfo(env, bitmap, &info)) < 0) {
-		LOGE("AndroidBitmap_getInfo() failed ! error=%d", ret);
-		return;
-	}
+// 	if ((ret = AndroidBitmap_getInfo(env, bitmap, &info)) < 0) {
+// 		LOGE("AndroidBitmap_getInfo() failed ! error=%d", ret);
+// 		return;
+// 	}
     
-	width = info.width;
-	height = info.height;
+// 	width = info.width;
+// 	height = info.height;
 
-	if(!rgb || !ybuf) return;
+// 	if(!rgb || !ybuf) return;
 
-	if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) {
-		LOGE("Bitmap format is not RGBA_8888 !");
-		return;
-	}
+// 	if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) {
+// 		LOGE("Bitmap format is not RGBA_8888 !");
+// 		return;
+// 	}
 
-	if ((ret = AndroidBitmap_lockPixels(env, bitmap, &pixels)) < 0) {
-		LOGE("AndroidBitmap_lockPixels() failed ! error=%d", ret);
-	}
+// 	if ((ret = AndroidBitmap_lockPixels(env, bitmap, &pixels)) < 0) {
+// 		LOGE("AndroidBitmap_lockPixels() failed ! error=%d", ret);
+// 	}
 
-	colors = (int*)pixels;
-	int *lrgb =NULL;
-	lrgb = &rgb[0];
+// 	colors = (int*)pixels;
+// 	int *lrgb =NULL;
+// 	lrgb = &rgb[0];
 
-	for(i=0 ; i<width*height ; i++){
-		*colors++ = *lrgb++;
-	}
+// 	for(i=0 ; i<width*height ; i++){
+// 		*colors++ = *lrgb++;
+// 	}
 
-	AndroidBitmap_unlockPixels(env, bitmap);
+// 	AndroidBitmap_unlockPixels(env, bitmap);
 
-}
+// }
 
-jint 
-Java_com_camera_simplewebcam_CameraPreview_prepareCamera( JNIEnv* env,jobject thiz, jint videoid){
+// jint 
+// Java_com_camera_simplewebcam_CameraPreview_prepareCamera( JNIEnv* env,jobject thiz, jint videoid){
 
-	int ret;
+// 	int ret;
 
-	if(camerabase<0){
-		camerabase = checkCamerabase();
-	}
+// 	if(camerabase<0){
+// 		camerabase = checkCamerabase();
+// 	}
 
-	ret = opendevice(camerabase + videoid);
+// 	ret = opendevice(camerabase + videoid);
 
-	if(ret != ERROR_LOCAL){
-		ret = initdevice();
-	}
-	if(ret != ERROR_LOCAL){
-		ret = startcapturing();
+// 	if(ret != ERROR_LOCAL){
+// 		ret = initdevice();
+// 	}
+// 	if(ret != ERROR_LOCAL){
+// 		ret = startcapturing();
 
-		if(ret != SUCCESS_LOCAL){
-			stopcapturing();
-			uninitdevice ();
-			closedevice ();
-			LOGE("device resetted");	
-		}
+// 		if(ret != SUCCESS_LOCAL){
+// 			stopcapturing();
+// 			uninitdevice ();
+// 			closedevice ();
+// 			LOGE("device resetted");	
+// 		}
 
-	}
+// 	}
 
-	if(ret != ERROR_LOCAL){
-		rgb = (int *)malloc(sizeof(int) * (IMG_WIDTH*IMG_HEIGHT));
-		ybuf = (int *)malloc(sizeof(int) * (IMG_WIDTH*IMG_HEIGHT));
-	}
-	return ret;
-}	
+// 	if(ret != ERROR_LOCAL){
+// 		rgb = (int *)malloc(sizeof(int) * (IMG_WIDTH*IMG_HEIGHT));
+// 		ybuf = (int *)malloc(sizeof(int) * (IMG_WIDTH*IMG_HEIGHT));
+// 	}
+// 	return ret;
+// }	
 
 
 
-jint 
-Java_com_camera_simplewebcam_CameraPreview_prepareCameraWithBase( JNIEnv* env,jobject thiz, jint videoid, jint videobase){
+// jint 
+// Java_com_camera_simplewebcam_CameraPreview_prepareCameraWithBase( JNIEnv* env,jobject thiz, jint videoid, jint videobase){
 	
-		int ret;
+// 		int ret;
 
-		camerabase = videobase;
+// 		camerabase = videobase;
 	
-		return Java_com_camera_simplewebcam_CameraPreview_prepareCamera(env,thiz,videoid);
+// 		return Java_com_camera_simplewebcam_CameraPreview_prepareCamera(env,thiz,videoid);
 	
-}
+// }
 
-void 
-Java_com_camera_simplewebcam_CameraPreview_processCamera( JNIEnv* env,
-										jobject thiz){
+// void 
+// Java_com_camera_simplewebcam_CameraPreview_processCamera( JNIEnv* env,
+// 										jobject thiz){
 
-	readframeonce();
-}
+// 	readframeonce();
+// }
 
-void 
-Java_com_camera_simplewebcam_CameraPreview_stopCamera(JNIEnv* env,jobject thiz){
+// void 
+// Java_com_camera_simplewebcam_CameraPreview_stopCamera(JNIEnv* env,jobject thiz){
 
-	stopcapturing ();
+// 	stopcapturing ();
 
-	uninitdevice ();
+// 	uninitdevice ();
 
-	closedevice ();
+// 	closedevice ();
 
-	if(rgb) free(rgb);
-	if(ybuf) free(ybuf);
+// 	if(rgb) free(rgb);
+// 	if(ybuf) free(ybuf);
         
-	fd = -1;
+// 	fd = -1;
 
-}
+// }
 
